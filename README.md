@@ -13,7 +13,8 @@
 docker compose --profile init up
 ```
 
-> **Примечание: ДЛЯ ПРОЕКТА БЫЛА ИСПОЛЬЗОВАНА СБОРКА DOCKER ИЗ МОЕГО ПРЕДЫДУЩЕГО БОЛЕЕ МАСШТАБНОГО ПРОЕКТА ПОЭТОМУ СОБИРАТЬСЯ БУДЕТ МИНУТ 15 ССЫЛКА НА САМ ПРОЕКТ [https://github.com/nikitastaf1996/Megashop-project](https://github.com/nikitastaf1996/Megashop-project)** 
+> **Примечание: ДЛЯ ПРОЕКТА БЫЛА ИСПОЛЬЗОВАНА СБОРКА DOCKER ИЗ МОЕГО ПРЕДЫДУЩЕГО БОЛЕЕ МАСШТАБНОГО ПРОЕКТА ПОЭТОМУ СОБИРАТЬСЯ БУДЕТ МИНУТ 15 ССЫЛКА НА САМ ПРОЕКТ [https://github.com/nikitastaf1996/Megashop-project](https://github.com/nikitastaf1996/Megashop-project)
+> ЛУЧШЕ ПОСМОТРИТЕ НА НЕГО. СБОРКА ЗАЙМЕТ СТОЛЬКО ЖЕ ВРЕМЕНИ** 
 
 ### 2. Запуск Сервисов
 
