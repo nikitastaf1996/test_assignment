@@ -22,12 +22,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('header', function ($view) {
-            // Cache::forget('categories');
-            $categories =  Cache::remember('categories', 86400, function () {
-                return  Category::where('parent_id', 0)->with('children')->get();
-            });
-            $view->with(compact('categories'));
-        });
+        
     }
 }

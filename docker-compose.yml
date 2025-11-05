@@ -1,37 +1,20 @@
 version: '3.0'
 volumes:
  laravel-db:
- mailpit:
- source:
 services:
     database:
-      image: "mysql"
-      environment:
-        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-        MYSQL_DATABASE: ${DB_DATABASE}
-        MYSQL_USER: ${DB_USERNAME}
-        MYSQL_PASSWORD: ${DB_PASSWORD}
+      image: "postgres:18"
       ports:
-       - 3306:3306
+       - 5432:5432
+      environment:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
       volumes:
-       - laravel-db:/var/lib/mysql
+       - laravel-db:/var/lib/postgresql/18/docker
       healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-p ${DB_PASSWORD}"]
+        test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
         retries: 15
-        timeout: 3s
+        timeout: 5s
       profiles: [init,start]
-    phpmyadmin:
-      image: "phpmyadmin"
-      ports:
-        - 90:80
-      environment:
-        PMA_HOST: database
-        PMA_USER: ${DB_USERNAME}
-        PMA_PASSWORD: ${DB_PASSWORD}
-      depends_on:
-        database:
-          condition: service_healthy
-      profiles: [start]
     nginx:
      image: "nginx"
      ports:
@@ -41,8 +24,6 @@ services:
          database:
           condition: service_healthy
          php-fpm:
-          condition: service_started
-         tailwind-build:
           condition: service_started
      volumes:
       - .:/usr/share/nginx/html/
@@ -64,51 +45,6 @@ services:
      volumes:
       - .:/usr/share/nginx/html/
      profiles: [start]
-    queue:
-     build:
-      context: ./docker
-      dockerfile: php-fpm.Dockerfile
-      target: php-fpm-base
-     command: php /usr/share/nginx/html/artisan queue:work
-     depends_on:
-      database:
-       condition: service_healthy
-     volumes:
-      - .:/usr/share/nginx/html/
-     profiles: [start]
-    scheduler:
-     build:
-      context: ./docker
-      dockerfile: php-fpm.Dockerfile
-      target: php-fpm-base
-     command: php artisan schedule:work
-     depends_on:
-      database:
-       condition: service_healthy
-     volumes:
-      - .:/usr/share/nginx/html/
-     profiles: [start]
-    tailwind-build:
-     image: "node"
-     working_dir: /usr/share/nginx/html
-     command: npm run watch
-     volumes:
-      - .:/usr/share/nginx/html/
-     profiles: [start,dev]
-    mailpit:
-     image: axllent/mailpit
-     container_name: mailpit
-     restart: unless-stopped
-     volumes:
-      - mailpit:/data
-     ports:
-      - 100:8025
-      - 1025:1025
-     environment:
-      MP_MAX_MESSAGES: 5000
-      MP_DATABASE: /data/mailpit.db
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
     init:
      build:
       context: ./docker
