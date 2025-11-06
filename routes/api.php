@@ -15,3 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/deposit', [TransferController::class, 'deposit']);
+Route::post('/withdraw', [TransferController::class, 'withdraw']);
+Route::post('/transfer', [TransferController::class, 'transfer']);
+Route::get('/balance/{user}', [TransferController::class, 'balance'])->missing(function (Request $request) {
+    return response()->json(['status' => 'User wasnt found'], 404);
+});
